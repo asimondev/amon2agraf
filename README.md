@@ -4,7 +4,7 @@ Load AMON reports into MySQL database.
 This *README* describes the usage of AMON2AGRAF tool to import AMON JSON reports 
 into the MySQL database. The AMON JSON reports are produced by AMON with 
 **-t baseline**, **--output-format json**, **-output-file Filename** options.
-Usually you would additionally use the following AMON options **-i interval**, 
+Usually you would additionally use the following AMON options: **-i interval**, 
 **--start-time YYYY-MM-DD HH:MM[:SS]**, **--duration Minutes**. The JSON 
 report should be copied to the server with MySQL database and Grafana. On 
 this server the amon2agraf is used to load the database into the MySQL table. 
@@ -23,20 +23,21 @@ Grafana uses this MySQL database to display the data using AMON dashboards.
 
 Use -h option to see the help text for AMON.
 
-Create a baseline JSON report for the next 60 minutes using 1 minute interval.
+Create a baseline JSON report for the next 60 minutes using 10 second interval.
 
-    amon -t baseline -i 60 --output-format json --output-file test_baseline.json 
-    -- duration 60
+    amon -t baseline -i 10 --output-format json --output-file test_baseline.json 
+    --duration 60
     
 
-Create a baseline JSON report for a RAC database from 10am till 4pm.
-    amon -tr baseline -i 60 --output-format json --output-file test_baseline.json 
-    --start-time "2020-08-16 10:00" -- duration 360
+Create a baseline JSON report for a RAC database from 10am till 4pm using 60 second interval.  
+
+    amon -tr baseline -i 60 --output-format json --output-file test_baseline.json   
+    --start-time "2020-08-16 10:00" --duration 360
 
 Sometimes you have canceled the AMON report with Ctrl-C or just don't want to wait 
 for the whole duration time. In this case you can copy the existing JSON report 
-file and add **]}** an the end. This would make this JSON object valid. After that 
-the report can be reported as usual.
+file and add **]}** an the end of the file. This would make the JSON object in this file valid. After that 
+the report can be imported as usual.
 
 
 ## Data import examples. ##
