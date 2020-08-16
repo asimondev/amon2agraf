@@ -1,0 +1,142 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "AMON2AGRAF" "7" "August 2020" "" ""
+.
+.SH "NAME"
+\fBamon2agraf\fR \- data load tool from AMON to Grafana
+.
+.SH "SYNOPSIS"
+\fBamon2agraf\fR [\fIargs\fR]
+.
+.SH "DESCRIPTION"
+amon2agraf(7) loads AMON reports in JSON format into MySQL database\. There are Grafana dashboards available, which use these data for further analysis\. These Grafana dashboards are part of AGRAF projects\.
+.
+.P
+After downloading this tool, you can immediately start to use it\. Usually you only need to specify AMON JSON report file and MySQL connect (user, password, database)\. All parameters can by specified as: * program parameters * JSON configuration file * environment variables
+.
+.P
+Often you would create a shell script with MySQL connect data and specify the AMON JSON report file as the only parameter on the command line prompt\.
+.
+.SH "OPTIONS:"
+amon2agraf \-database DbName \-user DbUser \-password DbUserPassword \-file FileName [\-config JSONConfigFile \-host DbHost \-port DbPort \-table DbTableName \-append \-verbose \-version]
+.
+.IP "\(bu" 4
+\fB\-database\fR \fIDbName\fR: MySQL database name\.
+.
+.IP "\(bu" 4
+\fB\-user\fR \fIDbUser\fR: MySQL database user name\.
+.
+.IP "\(bu" 4
+\fB\-password\fR \fIDbUserPassword\fR: MySQL database user password\.
+.
+.IP "\(bu" 4
+\fB\-file\fR \fIFileName\fR: AMON JSON report file name\.
+.
+.IP "\(bu" 4
+\fB\-host\fR \fIDbHost\fR: MySQL database server name\.
+.
+.IP "\(bu" 4
+\fB\-port\fR \fIPort\fR: MySQL database port number\.
+.
+.IP "\(bu" 4
+\fB\-table\fR \fITableName\fR: Usually you would use the default table name\. After data import, the tool creates a view \fBbaseline_view\fR on the table\. If you like, you can import different JSON reports into different table and modify the view to display them in Grafana\.
+.
+.IP "\(bu" 4
+\fB\-append\fR : Append data to the existing table\. Per default the existing table would be truncated before inserting new data\.
+.
+.IP "" 0
+.
+.P
+Usually you use the same MySQL database for Grafana\. So you would create a shell script with all MySQL parameters as environment variables and run it before the import\. The names of environment variables are AGRAF_MYSQL_HOST, AGRAF_MYSQL_PORT, AGRAF_MYSQL_DATABASE, AGRAF_MYSQL_USER, AGRAF_MYSQL_PASSWORD\.
+.
+.SH "EXAMPLES"
+Interactive mode:
+.
+.P
+\fBamon2agraf \-database grafana \-user grafana \-password AmonGrafana \-file baseline_2020\-08\-14\.json\fR
+.
+.P
+Start amon2agraf, connect to the local instance of MySQL on the current node and import the file\.
+.
+.P
+If the AMON report was aborted by Ctrl\-C, then the JSON file is not complete\. In these case you have to add \fB[}\fR at the end of the file before importing it with amon2agraf\.
+.
+.P
+Using environments variables:
+.
+.IP "\(bu" 4
+Create a script agraf_env\.sh with database parameters\.
+.
+.IP
+export AGRAF_MYSQL_HOST=localhost
+.
+.br
+export AGRAF_MYSQL_PORT=3306
+.
+.br
+export AGRAF_MYSQL_DATABASE=grafana
+.
+.br
+export AGRAF_MYSQL_USER=grafana
+.
+.br
+export AGRAF_MYSQL_PASSWORD=MyGrafana1#
+.
+.IP "\(bu" 4
+Copy AMON JSON file to the curent directory\.
+.
+.IP "\(bu" 4
+Start import:
+.
+.br
+\&\. \./agraf_env\.sh
+.
+.br
+amon2agraf \-file baseline_2020\-08\-14\.json`
+.
+.IP "" 0
+.
+.P
+Using JSON config file:
+.
+.IP "\(bu" 4
+Create a JSON file agraf\.json with all required parameters\.
+.
+.IP
+{
+.
+.br
+"database": "grafana",
+.
+.br
+"user": "grafana",
+.
+.br
+"password": "MyGrafana1",
+.
+.br
+"file": "baseline_2020\-08\-14\.json"
+.
+.br
+}
+.
+.IP "\(bu" 4
+Copy AMON JSON file to the curent directory\.
+.
+.IP "\(bu" 4
+Start import:
+.
+.br
+amon2agraf \-config agraf\.json
+.
+.IP "" 0
+.
+.SH "AUTHOR"
+Andrej Simon \fIandrej\.simon@oracle\.com\fR
+.
+.SH "SEE ALSO"
+stmt2agraf(7)
+.
+.P
+Free performance monitoring tool AMON \fIhttp://sites\.google\.com/site/freetoolamon\fR

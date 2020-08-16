@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.7.3 (http://github.com/rtomayko/ronn/tree/0.7.3)'>
+  <title>amon2agraf(7) - data load tool from AMON to Grafana</title>
+  <style type='text/css' media='all'>
+  /* style: man */
+  body#manpage {margin:0}
+  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
+  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
+  .mp h2 {margin:10px 0 0 0}
+  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
+  .mp h3 {margin:0 0 0 4ex}
+  .mp dt {margin:0;clear:left}
+  .mp dt.flush {float:left;width:8ex}
+  .mp dd {margin:0 0 0 9ex}
+  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
+  .mp pre {margin-bottom:20px}
+  .mp pre+h2,.mp pre+h3 {margin-top:22px}
+  .mp h2+pre,.mp h3+pre {margin-top:5px}
+  .mp img {display:block;margin:auto}
+  .mp h1.man-title {display:none}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
+  .mp h2 {font-size:16px;line-height:1.25}
+  .mp h1 {font-size:20px;line-height:2}
+  .mp {text-align:justify;background:#fff}
+  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
+  .mp u {text-decoration:underline}
+  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
+  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
+  .mp b.man-ref {font-weight:normal;color:#434241}
+  .mp pre {padding:0 4ex}
+  .mp pre code {font-weight:normal;color:#434241}
+  .mp h2+pre,h3+pre {padding-left:0}
+  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
+  ol.man-decor {width:100%}
+  ol.man-decor li.tl {text-align:left}
+  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
+  ol.man-decor li.tr {text-align:right;float:right}
+  </style>
+</head>
+<!--
+  The following styles are deprecated and will be removed at some point:
+  div#man, div#man ol.man, div#man ol.head, div#man ol.man.
+
+  The .man-page, .man-decor, .man-head, .man-foot, .man-title, and
+  .man-navigation should be used instead.
+-->
+<body id='manpage'>
+  <div class='mp' id='man'>
+
+  <div class='man-navigation' style='display:none'>
+    <a href="#NAME">NAME</a>
+    <a href="#SYNOPSIS">SYNOPSIS</a>
+    <a href="#DESCRIPTION">DESCRIPTION</a>
+    <a href="#OPTIONS-">OPTIONS:</a>
+    <a href="#EXAMPLES">EXAMPLES</a>
+    <a href="#AUTHOR">AUTHOR</a>
+    <a href="#SEE-ALSO">SEE ALSO</a>
+  </div>
+
+  <ol class='man-decor man-head man head'>
+    <li class='tl'>amon2agraf(7)</li>
+    <li class='tc'></li>
+    <li class='tr'>amon2agraf(7)</li>
+  </ol>
+
+  <h2 id="NAME">NAME</h2>
+<p class="man-name">
+  <code>amon2agraf</code> - <span class="man-whatis">data load tool from AMON to Grafana</span>
+</p>
+
+<h2 id="SYNOPSIS">SYNOPSIS</h2>
+
+<p><code>amon2agraf</code> [<var>args</var>]</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p><a class="man-ref" href="amon2agraf.ron.html">amon2agraf<span class="s">(7)</span></a> loads AMON reports in JSON format into MySQL database. There
+are Grafana dashboards available, which use these data for further analysis. These Grafana dashboards are part of AGRAF projects.</p>
+
+<p>After downloading this tool, you can immediately start to use it. Usually
+you only need to specify AMON JSON report file and MySQL connect (user,
+password, database). All parameters can by specified as:
+* program parameters
+* JSON configuration file
+* environment variables</p>
+
+<p>Often you would create a shell script with MySQL connect data and specify the AMON JSON report file as the only parameter on the command line prompt.</p>
+
+<h2 id="OPTIONS-">OPTIONS:</h2>
+
+<p>   amon2agraf -database DbName -user DbUser -password DbUserPassword -file FileName [-config JSONConfigFile -host DbHost -port DbPort -table DbTableName -append -verbose -version]</p>
+
+<ul>
+<li><p><code>-database</code> <var>DbName</var>: MySQL database name.</p></li>
+<li><p><code>-user</code> <var>DbUser</var>: MySQL database user name.</p></li>
+<li><p><code>-password</code> <var>DbUserPassword</var>: MySQL database user password.</p></li>
+<li><p><code>-file</code> <var>FileName</var>: AMON JSON report file name.</p></li>
+<li><p><code>-host</code> <var>DbHost</var>: MySQL database server name.</p></li>
+<li><p><code>-port</code> <var>Port</var>: MySQL database port number.</p></li>
+<li><p><code>-table</code> <var>TableName</var>: Usually you would use the default table name. After data import, the tool creates a view <strong>baseline_view</strong> on the table. If you like, you can import different JSON reports into different table and modify the view to display them in Grafana.</p></li>
+<li><p><code>-append</code> : Append data to the existing table. Per default the existing
+table would be truncated before inserting new data.</p></li>
+</ul>
+
+
+<p>Usually you use the same MySQL database for Grafana. So you would create a shell script with all MySQL parameters as environment variables and run it before the import. The names of environment variables are AGRAF_MYSQL_HOST, AGRAF_MYSQL_PORT, AGRAF_MYSQL_DATABASE, AGRAF_MYSQL_USER, AGRAF_MYSQL_PASSWORD.</p>
+
+<h2 id="EXAMPLES">EXAMPLES</h2>
+
+<p>Interactive mode:</p>
+
+<p><code>amon2agraf -database grafana -user grafana -password AmonGrafana -file baseline_2020-08-14.json</code></p>
+
+<p>Start amon2agraf, connect to the local instance of MySQL on the current node and import the file.</p>
+
+<p>If the AMON report was aborted by Ctrl-C, then the JSON file is not complete. In these case you have to add <code>[}</code> at the end of the file before importing it with amon2agraf.</p>
+
+<p>Using environments variables:</p>
+
+<ul>
+<li><p>Create a script agraf_env.sh with database parameters.</p>
+
+<p> export AGRAF_MYSQL_HOST=localhost<br />
+ export AGRAF_MYSQL_PORT=3306<br />
+ export AGRAF_MYSQL_DATABASE=grafana<br />
+ export AGRAF_MYSQL_USER=grafana<br />
+ export AGRAF_MYSQL_PASSWORD=MyGrafana1#</p></li>
+<li><p>Copy AMON JSON file to the curent directory.</p></li>
+<li>Start import: <br />
+ . ./agraf_env.sh<br />
+ amon2agraf -file baseline_2020-08-14.json`</li>
+</ul>
+
+
+<p>Using JSON config file:</p>
+
+<ul>
+<li><p>Create a JSON file agraf.json with all required parameters.</p>
+
+<p> {<br />
+    "database": "grafana",<br />
+    "user": "grafana",<br />
+    "password": "MyGrafana1",<br />
+    "file": "baseline_2020-08-14.json"<br />
+ }</p></li>
+<li><p>Copy AMON JSON file to the curent directory.</p></li>
+<li>Start import:<br />
+ amon2agraf -config agraf.json</li>
+</ul>
+
+
+<h2 id="AUTHOR">AUTHOR</h2>
+
+<p>Andrej Simon <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x61;&#110;&#100;&#114;&#101;&#106;&#x2e;&#x73;&#105;&#109;&#x6f;&#110;&#x40;&#111;&#114;&#x61;&#99;&#x6c;&#101;&#x2e;&#99;&#111;&#x6d;" data-bare-link="true">&#97;&#110;&#100;&#x72;&#x65;&#x6a;&#x2e;&#x73;&#x69;&#x6d;&#x6f;&#x6e;&#x40;&#x6f;&#x72;&#97;&#99;&#x6c;&#x65;&#46;&#99;&#111;&#109;</a></p>
+
+<h2 id="SEE-ALSO">SEE ALSO</h2>
+
+<p><span class="man-ref">stmt2agraf<span class="s">(7)</span></span></p>
+
+<p><a href="http://sites.google.com/site/freetoolamon">Free performance monitoring tool AMON</a></p>
+
+
+  <ol class='man-decor man-foot man foot'>
+    <li class='tl'></li>
+    <li class='tc'>August 2020</li>
+    <li class='tr'>amon2agraf(7)</li>
+  </ol>
+
+  </div>
+</body>
+</html>
