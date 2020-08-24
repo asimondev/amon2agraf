@@ -18,12 +18,9 @@ Using Vagrant you have to download Oracle Linux 7 Box:
 
 The provided Vagrantfile uses the name ol7u7 to reference this Vagrant box.
 
-In the next step you should unpack the vagrant.tar file from GitHub 
-in a new directory. This directory would be the main directory for this 
-Vagrant project. You can start the process of creating the Oracle 
-Linux VM from this directory with the command `vagrant up`. Usually 
-this step takes some minutes. At the end you have to restart the new 
-VM:
+In the next step you should unpack the amon_vagrant.tar.gz file 
+from GitHub ( https://github.com/asimondev/amon2agraf/tree/master/VirtualBox ) in a new directory. This directory will be the main directory for this Vagrant project. The file Vagrantfile contains all
+details about the new Linux VM. If you like, you can change the default values for CPU (2) and memory (4096 MB) for the new VM. You can start the process of creating the Oracle Linux VM from this directory with the command `vagrant up`. Usually this step takes some minutes. At the end you have to restart the new VM:
 ```
 vagrant up  <-- Start and wait some minutes to complete.
 
