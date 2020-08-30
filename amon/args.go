@@ -15,7 +15,7 @@ type Account struct {
 	User     string `json:"user"`
 	Password string `json:"password"`
 	Database string `json:"database"`
-	Server   string `json:"server"`
+	Server   string `json:"host"`
 	Port     int    `json:"port"`
 }
 

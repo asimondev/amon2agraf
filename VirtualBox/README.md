@@ -18,18 +18,14 @@ Using Vagrant you have to download Oracle Linux 7 Box:
 
 The provided Vagrantfile uses the name ol7u7 to reference this Vagrant box.
 
-In the next step you should unpack the amon_vagrant.tar.gz file 
-from GitHub ( https://github.com/asimondev/amon2agraf/tree/master/VirtualBox ) in a new directory. This directory will be the main directory for this Vagrant project. The file Vagrantfile contains all
-details about the new Linux VM. If you like, you can change the default values for CPU (2) and memory (4096 MB) for the new VM. You can start the process of creating the Oracle Linux VM from this directory with the command `vagrant up`. Usually this step takes some minutes. At the end you have to restart the new VM:
+In the next step you should download and unpack the latest version of amon_vagrant.tar.gz from GitHub (https://github.com/asimondev/amon2agraf/tree/master/VirtualBox) in a new directory. This directory will be the main directory for this Vagrant project. The file Vagrantfile contains all details about the new Linux VM. If you like, you can change the default values for CPU (2) and memory (4096 MB) for the new VM. You can start the process of creating the Oracle Linux VM from this directory with the command `vagrant up`. Usually this step takes some minutes. The installation is completed, if you see the following output of the script:
+
 ```
-vagrant up  <-- Start and wait some minutes to complete.
-
-vagrant status  <-- Get the status of this VM. Default name is ol7amon1.
-
-vagrant halt ol7amon1  <-- Stop this VM.
-
-vagrant up  <-- Start this VM.
+    Installation finished. Please restart this Linux VM:
+    vagrant halt ol7amon1
+    vagrant up
 ```
+
 
 ## Installation of Docker containers. ##
 
@@ -49,8 +45,10 @@ docker-compose up -d
 The following Docker containers will be created:
 
 - Grafana (default account admin/admin01) with AMON dashboards on 
-the port 10101.
-- Project documentation on the port 10102.
+the port 10201.
+- Project documentation on the port 10202.
+
+These ports are also forwarded in the Vagrantfile.  
 
 The command `docker-compose up -d` should be used every time to start
 the containers.
@@ -58,7 +56,7 @@ the containers.
 ## Import of AMON JSON reports. ##
 
 The created VM already contains the tool amon2agraf. You should use 
-this tool to import the data from AMON report into the MySQL database. 
+this tool to import the data from AMON reports into the MySQL database. 
 Grafana uses the same MySQL account to access the data for displaying.
 
 The file /root/agraf/mysql.json contains the MySQL account details. So 
@@ -69,5 +67,5 @@ and import it using the following command:
 
 ## Documentation ##
 
-You can find more documentation in the AMON Help Docker container 
-using the URL http://localhost:10102.
+You can find more documentation in you local AMON Help Docker container 
+using the URL http://localhost:10202.
