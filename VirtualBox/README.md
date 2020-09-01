@@ -26,6 +26,52 @@ In the next step you should download and unpack the latest version of amon_vagra
     vagrant up
 ```
 
+## Checking the timezone in Linux VM. ##
+
+Sometimes the current timezone will be set to UTC after installation.
+This is wrong, because all timestamps will be converted into the
+MySQL database during import into UTC. So you have to verify the
+current timezone.
+
+```
+[vagrant@ol7amon1 ~]$ timedatectl
+      Local time: Tue 2020-09-01 15:13:07 UTC
+  Universal time: Tue 2020-09-01 15:13:07 UTC
+        RTC time: Tue 2020-09-01 15:13:08
+       Time zone: UTC (UTC, +0000)
+     NTP enabled: yes
+NTP synchronized: yes
+ RTC in local TZ: no
+      DST active: n/a
+
+[vagrant@ol7amon1 ~]$ ls -l /etc/localtime
+lrwxrwxrwx. 1 root root 23 Oct  3  2019 /etc/localtime -> /usr/share/zoneinfo/UTC
+```
+
+This output of *timedatectl* shows the UTC timezone. The following steps will set the timezone to Europe/Berlin.
+
+```
+[vagrant@ol7amon1 ~]$ sudo timedatectl set-timezone Europe/Berlin
+
+[vagrant@ol7amon1 ~]$ ls -l /etc/localtime
+lrwxrwxrwx 1 root root 35 Sep  1 17:14 /etc/localtime -> ../usr/share/zoneinfo/Europe/Berlin
+
+[vagrant@ol7amon1 ~]$ timedatectl
+      Local time: Tue 2020-09-01 17:15:13 CEST
+  Universal time: Tue 2020-09-01 15:15:13 UTC
+        RTC time: Tue 2020-09-01 15:15:14
+       Time zone: Europe/Berlin (CEST, +0200)
+     NTP enabled: yes
+NTP synchronized: yes
+ RTC in local TZ: no
+      DST active: yes
+ Last DST change: DST began at
+                  Sun 2020-03-29 01:59:59 CET
+                  Sun 2020-03-29 03:00:00 CEST
+ Next DST change: DST ends (the clock jumps one hour backwards) at
+                  Sun 2020-10-25 02:59:59 CEST
+                  Sun 2020-10-25 02:00:00 CET
+```
 
 ## Installation of Docker containers. ##
 
